@@ -1,3 +1,7 @@
+function getRandomNum(max) {
+    return Math.floor(Math.random() * max) + 1;
+}
+
 function getComputerChoice() {
     let rand = getRandomNum(3);
 
@@ -25,15 +29,11 @@ function getComputerChoice() {
     }
 }
 
-function getRandomNum(max) {
-    return Math.floor(Math.random() * max) + 1;
-}
-
-function ask_choice() {
+function askChoice() {
     return prompt('Please type in: Rock, Paper, or Scissors');
 }
 
-function game_round(playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toUpperCase();
     computerSelection = computerSelection.toUpperCase();
 
@@ -69,7 +69,44 @@ function game_round(playerSelection, computerSelection) {
             case 'PAPER':
                 return winner_message;
             default:
-                return 'ERROR!'
+                return 'ERROR!';
         }
     }
 }
+
+function getWinner(player, computer) {
+    if (player > computer) {
+        return 'Player wins the game!';
+    } else if (player < computer) {
+        return 'Computer wins the game!';
+    } else if (player === computer) {
+        return 'Both Player and Computer tied!'
+    }
+}
+
+function game() {
+    const roundMax = 5;
+    let playerScore = 0;
+    let computerScore = 0;
+
+    for (let roundCount = 1; roundCount <= roundMax; roundCount++) {
+        let result = playRound(askChoice(), getComputerChoice());
+        result = `Round ${roundCount}: ` + result; 
+        console.log(result);
+        if (result.includes('Win')) {
+            playerScore++;
+        } else if (result.includes('Lose')) {
+            computerScore++;
+        } else if (result.includes('Tied')) {
+            playerScore++;
+            computerScore++;
+        }
+    }
+
+    let winnerMessage = getWinner(playerScore, computerScore);
+    let scoreboardMessage = `Player: ${playerScore} | Computer: ${computerScore}`;
+    let finalMessage = winnerMessage + '\n' + scoreboardMessage;
+    console.log(finalMessage);
+}
+
+game();
